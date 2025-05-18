@@ -8,13 +8,14 @@ import com.example.authshop.model.User;
 import com.example.authshop.repository.UserRepository;
 import com.example.authshop.security.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
+import java.util.Collections;
 
 @Service
 public class AuthService {
@@ -22,6 +23,8 @@ public class AuthService {
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private AuthenticationManager authManager;
     @Autowired
     private JwtService jwtService;
 
@@ -32,7 +35,7 @@ public class AuthService {
         User user = new User(
                 request.getUsername(),
                 passwordEncoder.encode(request.getPassword()),
-                Collection.singleton(Role.ROLE_USER)
+                Collections.singleton(Role.ROLE_USER)
         );
         userRepository.save(user);
         String token = jwtService.generateToken(user.getUsername());
