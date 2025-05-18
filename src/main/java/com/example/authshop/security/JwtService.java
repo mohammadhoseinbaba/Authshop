@@ -31,7 +31,7 @@ public class JwtService {
                 .getSubject();
     }
 
-    public boolean isTokenActive(String token , String username){
+    public boolean isTokenValid(String token , String username){
         return extractUsername(token).equals(username);
 
     }
